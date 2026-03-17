@@ -2,7 +2,7 @@ import { StatBar } from "@/components/StatBar/StatBar";
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { useMemo } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { createStatsStyles } from "./stats.styles";
+import createStatsStyles from "./stats.styles";
 
 type Stat = {
   name: string;

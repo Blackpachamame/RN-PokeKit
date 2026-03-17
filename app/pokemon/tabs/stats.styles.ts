@@ -1,7 +1,7 @@
 import { ThemeColors } from "@/utils/themes";
 import { StyleSheet } from "react-native";
 
-export const createStatsStyles = (colors: ThemeColors) =>
+const createStatsStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     scrollContent: {
       paddingTop: 32,
@@ -32,3 +32,4 @@ export const createStatsStyles = (colors: ThemeColors) =>
       textAlign: "right",
     },
   });
+export default createStatsStyles;

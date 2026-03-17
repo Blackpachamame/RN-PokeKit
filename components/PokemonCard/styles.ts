@@ -32,12 +32,21 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 80,
-    height: 80,
+    height: 72,
     flexShrink: 0,
   },
   image: {
     width: "100%",
     height: undefined,
     aspectRatio: 1,
+  },
+  rightColumn: {
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    gap: 4,
+  },
+  favoriteButton: {
+    padding: 4,
+    alignSelf: "flex-end",
   },
 });

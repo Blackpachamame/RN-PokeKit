@@ -4,7 +4,7 @@ import { EvolutionChain } from "@/types/pokemon";
 import { ArrowDown, GitBranch, LucideIcon, MoveVertical, Weight } from "lucide-react-native";
 import { useMemo } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
-import { createAboutStyles } from "./about.styles";
+import createAboutStyles from "./about.styles";
 
 type Props = {
   pokemon: {

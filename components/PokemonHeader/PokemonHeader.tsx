@@ -1,3 +1,5 @@
+import { useFavorites } from "@/context/FavoritesContext";
+import { PokemonListItem } from "@/types/pokemon";
 import { getMultiTypeGradient } from "@/utils/color";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -12,13 +14,16 @@ type PokemonHeaderProps = {
   name: string;
   image: string;
   types: string[];
+  pokemon?: PokemonListItem;
 };
 
-function PokemonHeader({ id, name, image, types }: PokemonHeaderProps) {
+function PokemonHeader({ id, name, image, types, pokemon }: PokemonHeaderProps) {
   const formattedNumber = `#${id.toString().padStart(4, "0")}`;
   const gradientColors = getMultiTypeGradient(types);
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const favorite = pokemon ? isFavorite(pokemon.id) : false;
 
   return (
     <LinearGradient
@@ -42,8 +47,15 @@ function PokemonHeader({ id, name, image, types }: PokemonHeaderProps) {
 
         <Text style={styles.number}>{formattedNumber}</Text>
 
-        <TouchableOpacity hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
-          <Heart size={24} color="#fff" strokeWidth={2.5} />
+        <TouchableOpacity
+          onPress={() => pokemon && toggleFavorite(pokemon)}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+          <Heart
+            size={24}
+            color="#fff"
+            fill={favorite ? "#fff" : "transparent"}
+            strokeWidth={2.5}
+          />
         </TouchableOpacity>
       </View>
 

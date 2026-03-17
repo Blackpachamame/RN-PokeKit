@@ -102,6 +102,7 @@ export default function PokemonDetailScreen() {
         name={pokemon.name}
         image={pokemon.image}
         types={pokemon.types}
+        pokemon={{ id: pokemon.id, name: pokemon.name, image: pokemon.image, types: pokemon.types }}
       />
 
       <View style={styles.tabsWrapper}>

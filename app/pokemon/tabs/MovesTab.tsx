@@ -3,7 +3,7 @@ import { useThemeColors } from "@/hooks/useThemedStyles";
 import { PokemonMove } from "@/types/pokemon";
 import { useMemo } from "react";
 import { FlatList, Text, View } from "react-native";
-import { createMovesStyles } from "./moves.styles";
+import createMovesStyles from "./moves.styles";
 
 type Props = {
   moves: PokemonMove[];

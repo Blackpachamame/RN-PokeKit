@@ -1,7 +1,7 @@
 import { ThemeColors } from "@/utils/themes";
 import { StyleSheet } from "react-native";
 
-export const createMovesStyles = (colors: ThemeColors) =>
+const createMovesStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     listContainer: {
       padding: 20,
@@ -32,3 +32,4 @@ export const createMovesStyles = (colors: ThemeColors) =>
       textAlign: "center",
     },
   });
+export default createMovesStyles;
