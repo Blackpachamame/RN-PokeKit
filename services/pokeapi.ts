@@ -98,7 +98,6 @@ export async function fetchPokemonsByType(typeId: number): Promise<{ id: number;
 /**
  * Fetch un Pokémon específico por ID (versión ligera)
  * Usado para búsqueda y filtros por tipo
- * Trae directamente por ID, no por posición
  */
 export async function fetchPokemonByIdLight(id: number): Promise<PokemonListItem | null> {
   try {
@@ -164,6 +163,25 @@ export async function fetchPokemonById(id: number): Promise<PokemonDetails> {
     console.error(`Error fetching pokemon ${id}:`, error);
     throw new Error(`Failed to fetch Pokémon #${id}`);
   }
+}
+
+/**
+ * Pokémon aleatorio para el juego "Who's That Pokémon?"
+ * easy: Gen 1 (IDs 1–151) / hard: todos (IDs 1–1025)
+ */
+export async function fetchRandomPokemon(difficulty: "easy" | "hard"): Promise<PokemonListItem> {
+  const max = difficulty === "easy" ? 151 : 1025;
+  const id = Math.floor(Math.random() * max) + 1;
+
+  const response = await api.get(`/pokemon/${id}`);
+  const data = response.data;
+
+  return {
+    id,
+    name: data.name,
+    image: data.sprites.other["official-artwork"].front_default ?? data.sprites.front_default,
+    types: data.types.map((t: any) => t.type.name) as string[],
+  };
 }
 
 async function fetchWeaknesses(types: string[]): Promise<string[]> {

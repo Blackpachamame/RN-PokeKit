@@ -1,29 +1,33 @@
+import { useThemeColors } from "@/hooks/useThemedStyles";
+import { ThemeColors } from "@/utils/themes";
+import { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export const EndOfListMessage = () => (
-  <View style={styles.container}>
-    <Text style={styles.emoji}>✨</Text>
-    <Text style={styles.text}>You`ve reached the end!</Text>
-  </View>
-);
+export const EndOfListMessage = () => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 32,
-    alignItems: "center",
-  },
-  emoji: {
-    fontSize: 48,
-    marginBottom: 12,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#1E293B",
-    marginBottom: 4,
-  },
-  subtext: {
-    fontSize: 14,
-    color: "#64748B",
-  },
-});
+  return (
+    <View style={styles.container}>
+      <Text style={styles.emoji}>✨</Text>
+      <Text style={styles.text}>You&apos;ve seen them all!</Text>
+    </View>
+  );
+};
+
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: 32,
+      alignItems: "center",
+    },
+    emoji: {
+      fontSize: 48,
+      marginBottom: 12,
+    },
+    text: {
+      fontSize: 16,
+      fontWeight: "700",
+      color: colors.textSecondary,
+    },
+  });

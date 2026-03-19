@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
-import { Animated, View } from "react-native";
-import { styles } from "./styles";
+import { useThemeColors } from "@/hooks/useThemedStyles";
+import { ThemeColors } from "@/utils/themes";
+import { useEffect, useMemo, useRef } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 
 type Props = {
   value: number;
@@ -9,6 +10,9 @@ type Props = {
 };
 
 export function StatBar({ value, maxValue, color = "#4CAF50" }: Props) {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const animatedValue = useRef(new Animated.Value(0)).current;
   const percentage = Math.min(value / maxValue, 1);
 
@@ -28,14 +32,23 @@ export function StatBar({ value, maxValue, color = "#4CAF50" }: Props) {
   return (
     <View style={styles.barBackground}>
       <Animated.View
-        style={[
-          styles.barFill,
-          {
-            width: widthInterpolated,
-            backgroundColor: color,
-          },
-        ]}
+        style={[styles.barFill, { width: widthInterpolated, backgroundColor: color }]}
       />
     </View>
   );
 }
+
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    barBackground: {
+      flex: 1,
+      height: 8,
+      backgroundColor: colors.backgroundTertiary,
+      borderRadius: 999,
+      overflow: "hidden",
+    },
+    barFill: {
+      height: "100%",
+      borderRadius: 999,
+    },
+  });

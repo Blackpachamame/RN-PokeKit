@@ -19,7 +19,7 @@ export function FavoritesHeader() {
         hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
         <ChevronLeft size={26} color={colors.text} strokeWidth={2.5} />
       </TouchableOpacity>
-      <Text style={styles.title}>Favoritos</Text>
+      <Text style={styles.title}>Favorites</Text>
       <ThemeToggle />
     </View>
   );

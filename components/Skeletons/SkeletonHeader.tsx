@@ -1,13 +1,11 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useRef } from "react";
-import { Animated, Image, StyleSheet, View } from "react-native";
+import { memo, useEffect, useRef } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-/**
- * SkeletonHeader - Loading placeholder para PokemonHeader
- */
-export const SkeletonHeader = React.memo(() => {
+export const SkeletonHeader = memo(() => {
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
   const colors = useThemeColors();
@@ -29,7 +27,6 @@ export const SkeletonHeader = React.memo(() => {
     );
 
     shimmer.start();
-
     return () => shimmer.stop();
   }, [shimmerAnim]);
 
@@ -47,7 +44,7 @@ export const SkeletonHeader = React.memo(() => {
       <Image
         source={require("@/assets/images/pokeball2.png")}
         style={styles.backgroundIcon}
-        resizeMode="contain"
+        contentFit="contain"
       />
 
       <View style={styles.topRow}>

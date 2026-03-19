@@ -71,3 +71,5 @@ export type PokemonType =
   | "dark"
   | "steel"
   | "fairy";
+
+export type PokemonTab = "about" | "stats" | "moves";

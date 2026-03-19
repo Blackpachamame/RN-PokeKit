@@ -1,12 +1,12 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
-import React, { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { Animated, Platform, StyleSheet, View } from "react-native";
 
 /**
  * SkeletonTabs - Loading placeholder para PokemonTabs
  * Coincide exactamente con los estilos de PokemonTabs
  */
-export const SkeletonTabs = React.memo(() => {
+export const SkeletonTabs = memo(() => {
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const colors = useThemeColors();
 

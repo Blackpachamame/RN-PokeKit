@@ -14,7 +14,7 @@ export function FavoritesCounter({ count }: FavoritesCounterProps) {
   return (
     <View style={styles.counterRow}>
       <Text style={styles.counterText}>
-        {count} {count === 1 ? "pokémon guardado" : "pokémon guardados"}
+        {count} {count === 1 ? "Pokémon saved" : "Pokémon saved"}
       </Text>
     </View>
   );

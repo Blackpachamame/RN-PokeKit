@@ -4,7 +4,7 @@ import { SkeletonTabContent } from "@/components/Skeletons/SkeletonTabContent";
 import { SkeletonTabs } from "@/components/Skeletons/SkeletonTabs";
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { fetchPokemonById } from "@/services/pokeapi";
-import { PokemonDetails } from "@/types/pokemon";
+import { PokemonDetails, PokemonTab } from "@/types/pokemon";
 import { pokemonTypeColors } from "@/utils/pokemonColors";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ export default function PokemonDetailScreen() {
   const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"about" | "stats" | "evolutions" | "moves">("about");
+  const [activeTab, setActiveTab] = useState<PokemonTab>("about");
 
   useEffect(() => {
     async function loadPokemon() {
@@ -43,7 +43,6 @@ export default function PokemonDetailScreen() {
     }
   }, [pokemonId]);
 
-  // Loading state with skeleton
   if (loading) {
     return (
       <View style={[styles.screen, { backgroundColor: colors.skeleton }]}>
@@ -82,16 +81,16 @@ export default function PokemonDetailScreen() {
     );
   }
 
-  // Error state
   if (error || !pokemon) {
     return (
-      <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>{error || "Pokémon not found"}</Text>
+      <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
+        <Text style={{ fontSize: 16, color: colors.textSecondary }}>
+          {error || "Pokémon not found"}
+        </Text>
       </View>
     );
   }
 
-  // Success state
   const accentColor = pokemonTypeColors[pokemon.types[0]] || "#6390F0";
   const RADIUS = 16;
 
@@ -107,8 +106,6 @@ export default function PokemonDetailScreen() {
 
       <View style={styles.tabsWrapper}>
         <PokemonTabs activeTab={activeTab} onTabChange={setActiveTab} accentColor={accentColor} />
-
-        {/* PIEZA DE RADIO INVERTIDO */}
         <View
           style={[
             styles.invertedRadiusContainer,
@@ -135,7 +132,6 @@ export default function PokemonDetailScreen() {
         </View>
       </View>
 
-      {/* Content */}
       <View style={[styles.content, { backgroundColor: colors.background }]}>
         {activeTab === "about" && <AboutTab pokemon={pokemon} currentPokemonId={pokemon.id} />}
         {activeTab === "stats" && <StatsTab stats={pokemon.stats} color={accentColor} />}

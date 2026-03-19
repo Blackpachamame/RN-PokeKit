@@ -1,4 +1,5 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
+import { PokemonTab } from "@/types/pokemon";
 import { BarChart3, Info, Zap } from "lucide-react-native";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -9,8 +10,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import styles from "./styles";
-
-export type PokemonTab = "about" | "stats" | "evolutions" | "moves";
 
 type TabConfig = {
   key: PokemonTab;

@@ -1,13 +1,9 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 
-/**
- * SkeletonCard - Loading placeholder que imita la estructura de PokemonCard
- * Muestra una animación shimmer mientras se cargan los datos
- */
-export const SkeletonCard = React.memo(() => {
+export const SkeletonCard = memo(() => {
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const colors = useThemeColors();
 
@@ -45,7 +41,7 @@ export const SkeletonCard = React.memo(() => {
       end={{ x: 1, y: 0 }}>
       <View style={styles.textContainer}>
         <View style={styles.contentWrapper}>
-          {/* Number skeleton - #0000 */}
+          {/* Number skeleton */}
           <Animated.View
             style={[styles.numberSkeleton, { opacity, backgroundColor: colors.skeleton }]}
           />

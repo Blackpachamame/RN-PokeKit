@@ -11,10 +11,8 @@ export function FavoritesEmpty() {
   return (
     <View style={styles.container}>
       <Heart size={48} color={colors.textTertiary} strokeWidth={1.5} />
-      <Text style={styles.title}>Sin favoritos aún</Text>
-      <Text style={styles.description}>
-        Tocá el corazón en cualquier pokémon para guardarlo acá.
-      </Text>
+      <Text style={styles.title}>No favorites yet</Text>
+      <Text style={styles.description}>Tap the heart on any Pokémon to save it here.</Text>
     </View>
   );
 }

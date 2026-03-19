@@ -1,6 +1,6 @@
 import { PokemonListItem } from "@/types/pokemon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 const FAVORITES_STORAGE_KEY = "@pokedex_favorites";
 
@@ -12,7 +12,7 @@ type FavoritesContextType = {
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
-export function FavoritesProvider({ children }: { children: React.ReactNode }) {
+export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<PokemonListItem[]>([]);
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { PokemonListItem } from "@/types/pokemon";
 import { getMultiTypeGradient } from "@/utils/color";
 import { LinearGradient } from "expo-linear-gradient";
 import { Heart } from "lucide-react-native";
-import React from "react";
+import { memo } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { TypeBadge } from "../TypeBadge/TypeBadge";
 import { styles } from "./styles";
@@ -13,7 +13,7 @@ type Props = {
   pokemon: PokemonListItem;
 };
 
-const PokemonCard = React.memo(({ pokemon }: Props) => {
+const PokemonCard = memo(({ pokemon }: Props) => {
   const colors = useThemeColors();
   const { isFavorite, toggleFavorite } = useFavorites();
   const favorite = isFavorite(pokemon.id);

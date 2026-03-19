@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
 import { SkeletonCard } from "./SkeletonCard";
 
@@ -14,10 +14,10 @@ export const SkeletonList = ({ count = 5 }: Props) => {
   return (
     <View>
       {Array.from({ length: count }).map((_, index) => (
-        <React.Fragment key={index}>
+        <Fragment key={index}>
           <SkeletonCard />
           {index < count - 1 && <View style={styles.separator} />}
-        </React.Fragment>
+        </Fragment>
       ))}
     </View>
   );

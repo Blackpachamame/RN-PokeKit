@@ -1,6 +1,6 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { pokemonTypeColors } from "@/utils/pokemonColors";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Text, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 import { createMoveCardStyles } from "./styles";

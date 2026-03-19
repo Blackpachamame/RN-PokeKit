@@ -91,7 +91,6 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.logoRow}>
           <Image
@@ -104,9 +103,8 @@ export default function HomeScreen() {
         <ThemeToggle />
       </View>
 
-      <Text style={styles.sectionLabel}>¿Qué vas a explorar hoy?</Text>
+      <Text style={styles.sectionLabel}>What will you explore today?</Text>
 
-      {/* Cards */}
       <View style={styles.cardsContainer}>
         <Pressable style={styles.card} onPress={() => router.push("/pokedex")}>
           <View style={[styles.iconBox, { backgroundColor: "#EEF2FF" }]}>
@@ -114,7 +112,7 @@ export default function HomeScreen() {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.cardTitle}>Pokédex</Text>
-            <Text style={styles.cardDescription}>Explorá los 1025 pokémon</Text>
+            <Text style={styles.cardDescription}>Explore all 1025 Pokémon</Text>
           </View>
         </Pressable>
 
@@ -123,8 +121,8 @@ export default function HomeScreen() {
             <Heart size={26} color="#EF4444" strokeWidth={2.5} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>Favoritos</Text>
-            <Text style={styles.cardDescription}>Tus pokémon guardados</Text>
+            <Text style={styles.cardTitle}>Favorites</Text>
+            <Text style={styles.cardDescription}>Your saved Pokémon</Text>
           </View>
         </Pressable>
 
@@ -133,8 +131,8 @@ export default function HomeScreen() {
             <HelpCircle size={26} color="#F59E0B" strokeWidth={2.5} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>¿Quién es ese Pokémon?</Text>
-            <Text style={styles.cardDescription}>Adiviná el pokémon oculto</Text>
+            <Text style={styles.cardTitle}>Who&apos;s That Pokémon?</Text>
+            <Text style={styles.cardDescription}>Guess the hidden Pokémon</Text>
           </View>
         </Pressable>
 
@@ -143,10 +141,10 @@ export default function HomeScreen() {
             <BarChart2 size={26} color="#22C55E" strokeWidth={2.5} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>Comparar</Text>
-            <Text style={styles.cardDescription}>Enfrentá pokémon</Text>
+            <Text style={styles.cardTitle}>Compare</Text>
+            <Text style={styles.cardDescription}>Battle your Pokémon</Text>
             <View style={styles.comingSoon}>
-              <Text style={styles.comingSoonText}>Próximamente</Text>
+              <Text style={styles.comingSoonText}>Coming soon</Text>
             </View>
           </View>
         </Pressable>

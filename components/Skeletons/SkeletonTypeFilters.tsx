@@ -1,12 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import { useThemeColors } from "@/hooks/useThemedStyles";
+import { memo, useEffect, useRef } from "react";
 import { Animated, ScrollView, StyleSheet, View } from "react-native";
 
-/**
- * SkeletonTypeFilters - Loading placeholder para los filtros de tipo
- * Muestra 18 chips skeleton con animación shimmer
- */
-export const SkeletonTypeFilters = React.memo(() => {
+export const SkeletonTypeFilters = memo(() => {
   const shimmerAnim = useRef(new Animated.Value(0)).current;
+  const colors = useThemeColors();
 
   useEffect(() => {
     const shimmer = Animated.loop(
@@ -25,7 +23,6 @@ export const SkeletonTypeFilters = React.memo(() => {
     );
 
     shimmer.start();
-
     return () => shimmer.stop();
   }, [shimmerAnim]);
 
@@ -41,15 +38,17 @@ export const SkeletonTypeFilters = React.memo(() => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         scrollEnabled={false}>
-        {/* 18 type chips */}
         {Array.from({ length: 18 }).map((_, index) => (
           <Animated.View
             key={index}
             style={[
               styles.chipSkeleton,
-              { opacity },
-              // Variar el ancho para simular diferentes tipos
-              { width: 70 + (index % 3) * 15 },
+              {
+                opacity,
+                backgroundColor: colors.skeleton,
+                // Variar el ancho para simular diferentes tipos
+                width: 70 + (index % 3) * 15,
+              },
             ]}
           />
         ))}
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
   },
   chipSkeleton: {
     height: 40,
-    backgroundColor: "#E2E8F0",
     borderRadius: 20,
     marginRight: 8,
   },

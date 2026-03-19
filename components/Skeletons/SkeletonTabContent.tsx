@@ -1,5 +1,5 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
-import React, { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 
 type SkeletonType = "about" | "stats" | "moves";
@@ -12,7 +12,7 @@ type Props = {
  * SkeletonTabContent - Loading placeholder para el contenido de los tabs
  * Tiene 3 variantes según el tab activo
  */
-export const SkeletonTabContent = React.memo(({ type = "about" }: Props) => {
+export const SkeletonTabContent = memo(({ type = "about" }: Props) => {
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const colors = useThemeColors();
 
