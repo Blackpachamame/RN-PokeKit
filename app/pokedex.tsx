@@ -5,22 +5,22 @@ import {
   SearchingState,
 } from "@/components/EmptyStates/EmptyStates";
 import { EndOfListMessage } from "@/components/EndOfListMessage/EndOfListMessage";
-import { PokedexHeader } from "@/components/PokedexScreen/PokedexHeader";
 import { PokedexResultCounter } from "@/components/PokedexScreen/PokedexResultCounter";
 import { createStyles } from "@/components/PokedexScreen/PokedexScreen.styles";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
+import { ScreenHeader } from "@/components/ScreenHeader/ScreenHeader";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 import { SkeletonTypeFilters } from "@/components/Skeletons/SkeletonTypeFilters";
-import { ThemeToggle } from "@/components/ThemeToggle/ThemeToggle";
 import { TypeFilters } from "@/components/TypeFilters/TypeFilters";
 import { usePokedexData } from "@/hooks/usePokedexData";
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { router } from "expo-router";
 import { useMemo } from "react";
-import { FlatList, Pressable, RefreshControl, View } from "react-native";
+import { FlatList, Pressable, RefreshControl } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const Separator = () => <View style={{ height: 16 }} />;
+const Separator = () => <Pressable style={{ height: 16 }} />;
 
 const renderItem = ({ item }: { item: any }) => (
   <Pressable onPress={() => router.push(`/pokemon/${item.id}`)}>
@@ -56,17 +56,12 @@ export default function PokedexScreen() {
 
   if (loading && dataToRender.length === 0) {
     return (
-      <View style={styles.skeletonContainer}>
-        <View style={styles.listContainer}>
-          <View style={styles.headerRow}>
-            <View style={{ flex: 1 }} />
-            <ThemeToggle />
-          </View>
-          <SearchBar value="" onChangeText={() => {}} />
-          <SkeletonTypeFilters />
-          <SkeletonList count={8} />
-        </View>
-      </View>
+      <SafeAreaView style={styles.skeletonContainer} edges={["top"]}>
+        <ScreenHeader title="Pokédex" />
+        <SearchBar value="" onChangeText={() => {}} />
+        <SkeletonTypeFilters />
+        <SkeletonList count={8} />
+      </SafeAreaView>
     );
   }
 
@@ -75,7 +70,7 @@ export default function PokedexScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <FlatList
         data={dataToRender}
         keyExtractor={(item) => item.id.toString()}
@@ -86,7 +81,7 @@ export default function PokedexScreen() {
         onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
-            <PokedexHeader />
+            <ScreenHeader title="Pokédex" />
             <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
             {indexLoading ? (
               <SkeletonTypeFilters />
@@ -128,6 +123,6 @@ export default function PokedexScreen() {
         windowSize={10}
         keyboardShouldPersistTaps="handled"
       />
-    </View>
+    </SafeAreaView>
   );
 }

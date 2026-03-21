@@ -1,3 +1,4 @@
+import { SPACING } from "@/utils/constants";
 import { ThemeColors } from "@/utils/themes";
 import { Platform, StyleSheet } from "react-native";
 
@@ -7,6 +8,7 @@ export const createStyles = (colors: ThemeColors) =>
     safeArea: {
       flex: 1,
       backgroundColor: colors.background,
+      paddingHorizontal: SPACING,
     },
     scroll: {
       flex: 1,
@@ -15,36 +17,9 @@ export const createStyles = (colors: ThemeColors) =>
       paddingBottom: 40,
     },
 
-    // Header
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-    },
-    backBtn: {
-      width: 38,
-      height: 38,
-      borderRadius: 19,
-      backgroundColor: colors.card,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    headerTitle: {
-      flex: 1,
-      textAlign: "center",
-      fontSize: 17,
-      fontWeight: "700",
-      color: colors.text,
-    },
-    headerRight: {
-      width: 38,
-    },
-
     // Stats bar
     statsBar: {
       flexDirection: "row",
-      marginHorizontal: 16,
       marginBottom: 16,
       backgroundColor: colors.card,
       borderRadius: 16,
@@ -85,7 +60,6 @@ export const createStyles = (colors: ThemeColors) =>
     // Dificultad
     difficultyContainer: {
       flexDirection: "row",
-      marginHorizontal: 17,
       marginBottom: 20,
       gap: 10,
     },
@@ -104,22 +78,22 @@ export const createStyles = (colors: ThemeColors) =>
       borderColor: colors.primary,
       backgroundColor: colors.primary + "18",
     },
+    diffBtnEmoji: {
+      fontSize: 20,
+      lineHeight: 24,
+    },
     diffBtnText: {
       fontSize: 14,
       fontWeight: "700",
       color: colors.textSecondary,
     },
     diffBtnTextActive: {
-      color: colors.primary,
+      color: colors.text,
     },
     diffBtnSub: {
       fontSize: 11,
       color: colors.textTertiary,
       fontWeight: "500",
-    },
-    diffBtnEmoji: {
-      fontSize: 20,
-      lineHeight: 24,
     },
     diffBtnSubActive: {
       color: colors.primary + "BB",
@@ -156,7 +130,6 @@ export const createStyles = (colors: ThemeColors) =>
       alignItems: "center",
       minHeight: 54,
       marginBottom: 8,
-      paddingHorizontal: 16,
     },
     pokemonNameRevealed: {
       fontSize: 26,
@@ -178,7 +151,6 @@ export const createStyles = (colors: ThemeColors) =>
 
     // Input
     inputSection: {
-      paddingHorizontal: 16,
       gap: 10,
       marginTop: 4,
     },
@@ -191,7 +163,7 @@ export const createStyles = (colors: ThemeColors) =>
       borderWidth: 1.5,
       borderColor: colors.inputBorder,
       borderRadius: 14,
-      paddingHorizontal: 16,
+      paddingHorizontal: SPACING,
       paddingVertical: Platform.OS === "ios" ? 14 : 11,
       fontSize: 16,
       color: colors.text,
@@ -243,13 +215,13 @@ export const createStyles = (colors: ThemeColors) =>
       letterSpacing: 0.3,
     },
 
-    // Mejor racha
+    // Best streak
     bestStreakContainer: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
       gap: 5,
-      marginTop: 20,
+      marginBottom: 16,
     },
     bestStreakText: {
       fontSize: 12,

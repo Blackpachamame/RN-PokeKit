@@ -1,5 +1,6 @@
 import { ThemeToggle } from "@/components/ThemeToggle/ThemeToggle";
 import { useThemeColors } from "@/hooks/useThemedStyles";
+import { HEADER_HEIGHT } from "@/utils/constants";
 import { ThemeColors } from "@/utils/themes";
 import { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -26,10 +27,10 @@ export function HomeHeader() {
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     header: {
+      height: HEADER_HEIGHT,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      paddingVertical: 20,
     },
     logoRow: {
       flexDirection: "row",

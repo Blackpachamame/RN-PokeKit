@@ -24,7 +24,6 @@ export const SkeletonCard = memo(() => {
     );
 
     shimmer.start();
-
     return () => shimmer.stop();
   }, [shimmerAnim]);
 
@@ -35,21 +34,18 @@ export const SkeletonCard = memo(() => {
 
   return (
     <LinearGradient
-      style={styles.card}
+      style={[styles.card, { backgroundColor: colors.card }]}
       colors={[colors.skeleton, colors.backgroundSecondary, colors.skeleton]}
       start={{ x: 0, y: 1 }}
       end={{ x: 1, y: 0 }}>
       <View style={styles.textContainer}>
         <View style={styles.contentWrapper}>
-          {/* Number skeleton */}
           <Animated.View
             style={[styles.numberSkeleton, { opacity, backgroundColor: colors.skeleton }]}
           />
-          {/* Name skeleton */}
           <Animated.View
             style={[styles.nameSkeleton, { opacity, backgroundColor: colors.skeleton }]}
           />
-          {/* Type badges skeleton */}
           <View style={styles.typesContainer}>
             <Animated.View
               style={[styles.typeBadge, { opacity, backgroundColor: colors.skeleton }]}
@@ -74,7 +70,6 @@ SkeletonCard.displayName = "SkeletonCard";
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
-    backgroundColor: "white",
     borderRadius: 16,
     padding: 16,
     alignItems: "center",
@@ -91,13 +86,11 @@ const styles = StyleSheet.create({
   contentWrapper: {
     gap: 4,
   },
-  // #0000 style
   numberSkeleton: {
     width: 50,
     height: 14,
     borderRadius: 4,
   },
-  // Pokemon name style
   nameSkeleton: {
     width: 130,
     height: 20,
@@ -109,7 +102,6 @@ const styles = StyleSheet.create({
     gap: 6,
     marginTop: 4,
   },
-  // Type badge style
   typeBadge: {
     width: 70,
     height: 24,
@@ -122,7 +114,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  // Circular skeleton matching pokemon image
   imageSkeleton: {
     width: 64,
     height: 64,

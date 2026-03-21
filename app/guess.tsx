@@ -3,16 +3,14 @@ import { createStyles } from "@/components/GuessGame/GuessGame.styles";
 import { GuessInput } from "@/components/GuessGame/GuessInput";
 import { GuessPokemonSilhouette } from "@/components/GuessGame/GuessPokemonSilhouette";
 import { GuessStatsBar } from "@/components/GuessGame/GuessStatsBar";
+import { ScreenHeader } from "@/components/ScreenHeader/ScreenHeader";
 import { useGuessGame } from "@/hooks/useGuessGame";
 import { useThemeColors } from "@/hooks/useThemedStyles";
-import { useRouter } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
 import { useMemo } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function GuessScreen() {
-  const router = useRouter();
   const colors = useThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -43,14 +41,7 @@ export default function GuessScreen() {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-            <ArrowLeft size={22} color={colors.text} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Who&apos;s That Pokémon?</Text>
-          <View style={styles.headerRight} />
-        </View>
+        <ScreenHeader title="Who's That Pokémon?" />
 
         <GuessStatsBar record={record} score={score} streak={streak} bestStreak={bestStreak} />
 

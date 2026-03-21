@@ -1,3 +1,4 @@
+import { SPACING } from "@/utils/constants";
 import { ThemeColors } from "@/utils/themes";
 import { StyleSheet } from "react-native";
 
@@ -6,26 +7,19 @@ export const createStyles = (colors: ThemeColors) =>
     container: {
       flex: 1,
       backgroundColor: colors.background,
+      paddingHorizontal: SPACING,
     },
     skeletonContainer: {
       flex: 1,
       backgroundColor: colors.background,
+      paddingHorizontal: SPACING,
     },
     listContainer: {
-      padding: 16,
       paddingBottom: 32,
-    },
-    headerRow: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: 16,
-      paddingTop: 16,
-      paddingBottom: 8,
     },
     resultCounter: {
       paddingVertical: 8,
-      paddingHorizontal: 16,
+      paddingHorizontal: 12,
       backgroundColor: colors.counterBackground,
       borderRadius: 8,
       marginBottom: 12,

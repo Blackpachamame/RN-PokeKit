@@ -6,18 +6,14 @@ import { router } from "expo-router";
 import { BarChart2, Heart, HelpCircle, Search } from "lucide-react-native";
 import { useMemo } from "react";
 import { Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const insets = useSafeAreaInsets();
   const colors = useThemeColors();
-  const styles = useMemo(
-    () => createStyles(colors, insets.top + 8, insets.bottom + 16),
-    [colors, insets.top, insets.bottom],
-  );
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <HomeHeader />
 
       <Text style={styles.sectionLabel}>What will you explore today?</Text>
@@ -57,6 +53,6 @@ export default function HomeScreen() {
           badge="Coming soon"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

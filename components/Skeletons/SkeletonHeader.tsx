@@ -1,4 +1,5 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
+import { SPACING } from "@/utils/constants";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { memo, useEffect, useRef } from "react";
@@ -46,7 +47,6 @@ export const SkeletonHeader = memo(() => {
         style={styles.backgroundIcon}
         contentFit="contain"
       />
-
       <View style={styles.topRow}>
         <Animated.View
           style={[styles.nameSkeleton, { opacity, backgroundColor: colors.skeletonHighlight }]}
@@ -55,7 +55,6 @@ export const SkeletonHeader = memo(() => {
           style={[styles.numberSkeleton, { opacity, backgroundColor: colors.skeletonHighlight }]}
         />
       </View>
-
       <View style={styles.types}>
         <Animated.View
           style={[styles.typeBadge, { opacity, backgroundColor: colors.skeletonHighlight }]}
@@ -67,7 +66,6 @@ export const SkeletonHeader = memo(() => {
           ]}
         />
       </View>
-
       <Animated.View
         style={[styles.imageSkeleton, { opacity, backgroundColor: colors.skeletonHighlight }]}
       />
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     height: 320,
     paddingTop: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
