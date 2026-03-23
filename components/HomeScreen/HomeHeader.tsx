@@ -2,8 +2,9 @@ import { ThemeToggle } from "@/components/ThemeToggle/ThemeToggle";
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { HEADER_HEIGHT } from "@/utils/constants";
 import { ThemeColors } from "@/utils/themes";
+import { Image } from "expo-image";
 import { useMemo } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export function HomeHeader() {
   const colors = useThemeColors();
@@ -15,7 +16,7 @@ export function HomeHeader() {
         <Image
           source={require("@/assets/images/splash-icon.png")}
           style={styles.logo}
-          resizeMode="contain"
+          contentFit="contain"
         />
         <Text style={styles.appName}>PokéKit</Text>
       </View>

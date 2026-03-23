@@ -17,7 +17,7 @@ export function useTypeFilter(selectedTypes: string[]) {
   const hasActiveFilters = selectedTypes.length > 0;
   const filteredIdsRef = useRef<number[]>([]);
   const isLoadingRef = useRef(false);
-  const loadedCountRef = useRef(0); // Ref para rastrear cuántos hemos cargado
+  const loadedCountRef = useRef(0);
 
   // Cargar índice completo la primera vez
   useEffect(() => {
@@ -63,7 +63,7 @@ export function useTypeFilter(selectedTypes: string[]) {
     if (selectedTypes.length === 0) {
       setTypeResults([]);
       filteredIdsRef.current = [];
-      loadedCountRef.current = 0; // Reset
+      loadedCountRef.current = 0;
       return;
     }
 
@@ -73,7 +73,6 @@ export function useTypeFilter(selectedTypes: string[]) {
       setTypeLoading(true);
 
       try {
-        // Combinar IDs de todos los tipos seleccionados
         const combinedIds = new Set<number>();
         selectedTypes.forEach((type) => {
           const pokemonList = typeIndex[type] || [];
@@ -82,9 +81,8 @@ export function useTypeFilter(selectedTypes: string[]) {
 
         const sortedIds = Array.from(combinedIds).sort((a, b) => a - b);
         filteredIdsRef.current = sortedIds;
-        loadedCountRef.current = 0; // Reset al cambiar tipos
+        loadedCountRef.current = 0;
 
-        // Cargar solo los primeros 20
         const firstBatch = sortedIds.slice(0, ITEMS_PER_BATCH);
 
         const results = await Promise.all(
@@ -100,7 +98,7 @@ export function useTypeFilter(selectedTypes: string[]) {
 
         const validResults = results.filter((r): r is PokemonListItem => r !== null);
         setTypeResults(validResults);
-        loadedCountRef.current = validResults.length; // Actualizar ref
+        loadedCountRef.current = validResults.length;
       } catch (e) {
         console.error(e);
         setTypeResults([]);
@@ -115,25 +113,17 @@ export function useTypeFilter(selectedTypes: string[]) {
 
   // Función para cargar más resultados
   const loadMoreFiltered = async () => {
-    if (isLoadingRef.current || typeLoading) {
-      return;
-    }
+    if (isLoadingRef.current || typeLoading) return;
 
-    // Usar loadedCountRef en lugar de typeResults.length
     const currentCount = loadedCountRef.current;
 
-    if (currentCount >= filteredIdsRef.current.length) {
-      return;
-    }
+    if (currentCount >= filteredIdsRef.current.length) return;
 
     isLoadingRef.current = true;
     setTypeLoading(true);
 
     try {
-      const nextIds = filteredIdsRef.current.slice(
-        typeResults.length,
-        typeResults.length + ITEMS_PER_BATCH,
-      );
+      const nextIds = filteredIdsRef.current.slice(currentCount, currentCount + ITEMS_PER_BATCH);
 
       const results = await Promise.all(
         nextIds.map(async (id) => {
@@ -150,13 +140,10 @@ export function useTypeFilter(selectedTypes: string[]) {
 
       setTypeResults((prev) => {
         const allPokemon = [...prev, ...validResults];
-
-        // Filtrar duplicados por ID antes de guardar en el estado
         const uniqueMap = new Map();
         allPokemon.forEach((p) => uniqueMap.set(p.id, p));
         const unique = Array.from(uniqueMap.values());
-
-        loadedCountRef.current = unique.length; // Sincronizar el ref con la data real única
+        loadedCountRef.current = unique.length;
         return unique;
       });
     } catch (e) {
@@ -167,7 +154,6 @@ export function useTypeFilter(selectedTypes: string[]) {
     }
   };
 
-  // Usar loadedCountRef
   const hasMoreFiltered = loadedCountRef.current < filteredIdsRef.current.length;
 
   return {

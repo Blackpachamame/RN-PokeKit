@@ -2,10 +2,11 @@ import { useFavorites } from "@/context/FavoritesContext";
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { PokemonListItem } from "@/types/pokemon";
 import { getMultiTypeGradient } from "@/utils/color";
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Heart } from "lucide-react-native";
 import { memo } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { TypeBadge } from "../TypeBadge/TypeBadge";
 import { styles } from "./styles";
 
@@ -60,7 +61,7 @@ const PokemonCard = memo(({ pokemon }: Props) => {
         </TouchableOpacity>
 
         <View style={styles.imageContainer}>
-          <Image source={{ uri: pokemon.image }} style={styles.image} resizeMode="contain" />
+          <Image source={{ uri: pokemon.image }} style={styles.image} contentFit="contain" />
         </View>
       </View>
     </LinearGradient>

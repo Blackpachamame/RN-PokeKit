@@ -1,9 +1,10 @@
 import { TypeBadge } from "@/components/TypeBadge/TypeBadge";
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { EvolutionChain } from "@/types/pokemon";
+import { Image } from "expo-image";
 import { ArrowDown, GitBranch, LucideIcon, MoveVertical, Weight } from "lucide-react-native";
 import { useMemo } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import createAboutStyles from "./about.styles";
 
 type Props = {
@@ -236,7 +237,7 @@ function EvolutionCardVertical({
       <Image
         source={{ uri: evolution.image }}
         style={styles.evolutionImageVertical}
-        resizeMode="contain"
+        contentFit="contain"
       />
       <View style={styles.evolutionInfoVertical}>
         <Text style={styles.evolutionNumber}>#{evolution.id.toString().padStart(3, "0")}</Text>

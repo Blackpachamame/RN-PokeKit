@@ -56,7 +56,7 @@ export default function PokedexScreen() {
 
   if (loading && dataToRender.length === 0) {
     return (
-      <SafeAreaView style={styles.skeletonContainer} edges={["top"]}>
+      <SafeAreaView style={styles.container} edges={["top"]}>
         <ScreenHeader title="Pokédex" />
         <SearchBar value="" onChangeText={() => {}} />
         <SkeletonTypeFilters />

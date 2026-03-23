@@ -1,10 +1,11 @@
 import { useFavorites } from "@/context/FavoritesContext";
 import { PokemonListItem } from "@/types/pokemon";
 import { getMultiTypeGradient } from "@/utils/color";
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { ChevronLeft, Heart } from "lucide-react-native";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TypeBadge } from "../TypeBadge/TypeBadge";
 import { styles } from "./styles";
@@ -34,7 +35,7 @@ function PokemonHeader({ id, name, image, types, pokemon }: PokemonHeaderProps) 
       <Image
         source={require("@/assets/images/pokeball2.png")}
         style={styles.backgroundIcon}
-        resizeMode="contain"
+        contentFit="contain"
       />
 
       {/* Fila 1: Back | Número | Favorito */}
@@ -72,7 +73,7 @@ function PokemonHeader({ id, name, image, types, pokemon }: PokemonHeaderProps) 
       </View>
 
       {/* Imagen centrada */}
-      <Image source={{ uri: image }} style={styles.image} resizeMode="contain" />
+      <Image source={{ uri: image }} style={styles.image} contentFit="contain" />
     </LinearGradient>
   );
 }

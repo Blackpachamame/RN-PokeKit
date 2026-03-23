@@ -13,9 +13,7 @@ export function FavoritesCounter({ count }: FavoritesCounterProps) {
 
   return (
     <View style={styles.counterRow}>
-      <Text style={styles.counterText}>
-        {count} {count === 1 ? "Pokémon saved" : "Pokémon saved"}
-      </Text>
+      <Text style={styles.counterText}>{count} Pokémon saved</Text>
     </View>
   );
 }
@@ -23,8 +21,8 @@ export function FavoritesCounter({ count }: FavoritesCounterProps) {
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     counterRow: {
-      paddingHorizontal: 16,
       paddingVertical: 12,
+      marginBottom: 12,
       borderBottomWidth: 1,
       borderBottomColor: colors.border,
     },

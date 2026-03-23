@@ -9,17 +9,12 @@ export const createStyles = (colors: ThemeColors) =>
       backgroundColor: colors.background,
       paddingHorizontal: SPACING,
     },
-    skeletonContainer: {
-      flex: 1,
-      backgroundColor: colors.background,
-      paddingHorizontal: SPACING,
-    },
     listContainer: {
       paddingBottom: 32,
     },
     resultCounter: {
       paddingVertical: 8,
-      paddingHorizontal: 12,
+      paddingHorizontal: 16,
       backgroundColor: colors.counterBackground,
       borderRadius: 8,
       marginBottom: 12,

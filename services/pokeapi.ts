@@ -184,18 +184,20 @@ export async function fetchRandomPokemon(difficulty: "easy" | "hard"): Promise<P
   };
 }
 
+/**
+ * Obtiene las debilidades de un Pokémon a partir de sus tipos.
+ * Fetching en paralelo — un Pokémon tiene máximo 2 tipos.
+ */
 async function fetchWeaknesses(types: string[]): Promise<string[]> {
   try {
+    const responses = await Promise.all(types.map((typeName) => api.get(`/type/${typeName}`)));
+
     const weaknessesSet = new Set<string>();
-
-    for (const typeName of types) {
-      const typeResponse = await api.get(`/type/${typeName}`);
-      const damageRelations = typeResponse.data.damage_relations;
-
-      damageRelations.double_damage_from.forEach((type: any) => {
+    responses.forEach((typeResponse) => {
+      typeResponse.data.damage_relations.double_damage_from.forEach((type: any) => {
         weaknessesSet.add(type.name);
       });
-    }
+    });
 
     return Array.from(weaknessesSet);
   } catch (error) {
@@ -204,6 +206,10 @@ async function fetchWeaknesses(types: string[]): Promise<string[]> {
   }
 }
 
+/**
+ * Construye la cadena de evolución completa de un Pokémon.
+ * Los nodos del mismo nivel se resuelven en paralelo con Promise.all.
+ */
 async function fetchEvolutionChain(evolutionChainUrl: string): Promise<EvolutionChain[]> {
   try {
     const response = await axios.get(evolutionChainUrl);
@@ -211,7 +217,7 @@ async function fetchEvolutionChain(evolutionChainUrl: string): Promise<Evolution
 
     const evolutions: EvolutionChain[] = [];
 
-    const processChain = async (chainLink: any, level: number = 0) => {
+    const processChain = async (chainLink: any) => {
       const speciesUrl = chainLink.species.url;
       const speciesId = parseInt(speciesUrl.split("/").filter(Boolean).pop() || "0");
 
@@ -228,10 +234,8 @@ async function fetchEvolutionChain(evolutionChainUrl: string): Promise<Evolution
         minLevel,
       });
 
-      if (chainLink.evolves_to && chainLink.evolves_to.length > 0) {
-        for (const evolution of chainLink.evolves_to) {
-          await processChain(evolution, level + 1);
-        }
+      if (chainLink.evolves_to?.length > 0) {
+        await Promise.all(chainLink.evolves_to.map((evo: any) => processChain(evo)));
       }
     };
 

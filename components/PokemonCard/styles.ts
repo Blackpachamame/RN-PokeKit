@@ -8,8 +8,9 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 0,
+    elevation: 1,
+    marginLeft: 1,
   },
   textContainer: {
     flex: 1,

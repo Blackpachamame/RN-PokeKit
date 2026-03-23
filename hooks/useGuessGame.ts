@@ -6,13 +6,15 @@ import { Animated, Keyboard } from "react-native";
 
 // Tipos
 export type Difficulty = "easy" | "hard";
-export type GameState = "loading" | "playing" | "correct" | "wrong";
+export type GameState = "loading" | "playing" | "correct" | "wrong" | "error";
 
 // Helpers
 const STORAGE_KEYS = {
   record: "guess_record",
   bestStreak: "guess_best_streak",
 };
+
+const MAX_RETRIES = 3;
 
 export function normalize(str: string): string {
   return str
@@ -100,9 +102,9 @@ export function useGuessGame() {
     }).start();
   }, [shakeAnim, feedbackOpacity]);
 
-  // Cargar pokémon
+  // Cargar pokémon con límite de reintentos
   const loadPokemon = useCallback(
-    async (diff: Difficulty = difficulty) => {
+    async (diff: Difficulty = difficulty, attempt: number = 0) => {
       setGameState("loading");
       setInputValue("");
       silhouetteOpacity.setValue(1);
@@ -114,7 +116,11 @@ export function useGuessGame() {
         setPokemon(p);
         setGameState("playing");
       } catch {
-        loadPokemon(diff);
+        if (attempt < MAX_RETRIES) {
+          loadPokemon(diff, attempt + 1);
+        } else {
+          setGameState("error");
+        }
       }
     },
     [difficulty, silhouetteOpacity, revealScale, feedbackOpacity],

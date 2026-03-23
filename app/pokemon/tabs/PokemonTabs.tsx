@@ -1,6 +1,6 @@
 import { useThemeColors } from "@/hooks/useThemedStyles";
 import { PokemonTab } from "@/types/pokemon";
-import { BarChart3, Info, Zap } from "lucide-react-native";
+import { BarChart3, Info, LucideIcon, Zap } from "lucide-react-native";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 import Animated, {
@@ -14,7 +14,7 @@ import styles from "./styles";
 type TabConfig = {
   key: PokemonTab;
   label: string;
-  Icon: any;
+  Icon: LucideIcon;
 };
 
 const TABS: TabConfig[] = [
