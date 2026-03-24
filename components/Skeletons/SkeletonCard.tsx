@@ -39,28 +39,36 @@ export const SkeletonCard = memo(() => {
       start={{ x: 0, y: 1 }}
       end={{ x: 1, y: 0 }}>
       <View style={styles.textContainer}>
-        <View style={styles.contentWrapper}>
+        {/* Número + corazón */}
+        <View style={styles.metaRow}>
           <Animated.View
             style={[styles.numberSkeleton, { opacity, backgroundColor: colors.skeleton }]}
           />
           <Animated.View
-            style={[styles.nameSkeleton, { opacity, backgroundColor: colors.skeleton }]}
+            style={[styles.heartSkeleton, { opacity, backgroundColor: colors.skeleton }]}
           />
-          <View style={styles.typesContainer}>
-            <Animated.View
-              style={[styles.typeBadge, { opacity, backgroundColor: colors.skeleton }]}
-            />
-            <Animated.View
-              style={[styles.typeBadge, { opacity, width: 60, backgroundColor: colors.skeleton }]}
-            />
-          </View>
+        </View>
+
+        {/* Nombre */}
+        <Animated.View
+          style={[styles.nameSkeleton, { opacity, backgroundColor: colors.skeleton }]}
+        />
+
+        {/* Tipos */}
+        <View style={styles.typesContainer}>
+          <Animated.View
+            style={[styles.typeBadge, { opacity, backgroundColor: colors.skeleton }]}
+          />
+          <Animated.View
+            style={[styles.typeBadge, { opacity, width: 60, backgroundColor: colors.skeleton }]}
+          />
         </View>
       </View>
-      <View style={styles.imageContainer}>
-        <Animated.View
-          style={[styles.imageSkeleton, { opacity, backgroundColor: colors.skeleton }]}
-        />
-      </View>
+
+      {/* Imagen */}
+      <Animated.View
+        style={[styles.imageSkeleton, { opacity, backgroundColor: colors.skeleton }]}
+      />
     </LinearGradient>
   );
 });
@@ -71,25 +79,33 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     borderRadius: 16,
-    padding: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 2,
   },
   textContainer: {
     flex: 1,
     gap: 4,
   },
-  contentWrapper: {
-    gap: 4,
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
   numberSkeleton: {
-    width: 50,
-    height: 14,
+    width: 48,
+    height: 12,
     borderRadius: 4,
+  },
+  heartSkeleton: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
   },
   nameSkeleton: {
     width: 130,
@@ -103,20 +119,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   typeBadge: {
-    width: 70,
-    height: 24,
-    borderRadius: 12,
-  },
-  imageContainer: {
-    width: 80,
-    height: 80,
-    flexShrink: 0,
-    justifyContent: "center",
-    alignItems: "center",
+    width: 28,
+    height: 28,
+    borderRadius: 14,
   },
   imageSkeleton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    flexShrink: 0,
   },
 });

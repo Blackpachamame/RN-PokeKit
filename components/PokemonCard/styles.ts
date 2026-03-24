@@ -4,11 +4,12 @@ export const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     borderRadius: 16,
-    padding: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     alignItems: "center",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 0,
+    shadowRadius: 4,
     elevation: 1,
     marginLeft: 1,
   },
@@ -16,10 +17,18 @@ export const styles = StyleSheet.create({
     flex: 1,
     gap: 4,
   },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
   number: {
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 0.5,
+  },
+  favoriteButton: {
+    padding: 2,
   },
   name: {
     fontSize: 18,
@@ -31,23 +40,9 @@ export const styles = StyleSheet.create({
     gap: 6,
     marginTop: 4,
   },
-  imageContainer: {
-    width: 80,
-    height: 72,
-    flexShrink: 0,
-  },
   image: {
-    width: "100%",
-    height: undefined,
-    aspectRatio: 1,
-  },
-  rightColumn: {
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    gap: 4,
-  },
-  favoriteButton: {
-    padding: 4,
-    alignSelf: "flex-end",
+    width: 90,
+    height: 90,
+    flexShrink: 0,
   },
 });

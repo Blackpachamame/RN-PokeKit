@@ -4,25 +4,25 @@ import { Moon, Sun } from "lucide-react-native";
 import { Pressable, StyleSheet } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
-/**
- * ThemeToggle - Botón para cambiar entre modo claro y oscuro
- * Con animación de rotación
- */
+// Fuera del componente — persiste entre mounts
+const rotationValue = { current: 0 };
+
 export function ThemeToggle() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const colors = useThemeColors();
-  const rotation = useSharedValue(0);
+  const isDark = resolvedTheme === "dark";
+
+  const rotation = useSharedValue(rotationValue.current);
 
   const handlePress = () => {
-    rotation.value = withSpring(rotation.value + 180);
+    rotationValue.current += 180;
+    rotation.value = withSpring(rotationValue.current);
     toggleTheme();
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
   }));
-
-  const isDark = resolvedTheme === "dark";
 
   return (
     <Pressable

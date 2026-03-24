@@ -23,47 +23,44 @@ const PokemonCard = memo(({ pokemon }: Props) => {
 
   return (
     <LinearGradient
-      style={[styles.card, { backgroundColor: colors.card, shadowColor: colors.text }]}
+      style={[styles.card, { shadowColor: colors.text }]}
       colors={[colors.cardBorder, colors.card, typeGradient[0]]}
       start={{ x: 0, y: 1 }}
       end={{ x: 1, y: 0 }}>
+      {/* Columna izquierda: meta + nombre + tipos */}
       <View style={styles.textContainer}>
-        <View>
+        {/* Número + favorito en la misma fila */}
+        <View style={styles.metaRow}>
           <Text style={[styles.number, { color: colors.textTertiary }]}>{formattedNumber}</Text>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={[styles.name, { color: colors.text }]}>
-            {pokemon.name}
-          </Text>
-          <View style={styles.typesContainer}>
-            {pokemon.types.map((type) => (
-              <TypeBadge key={type} type={type} variant="badge" />
-            ))}
-          </View>
+          <TouchableOpacity
+            onPress={(e) => {
+              e.stopPropagation();
+              toggleFavorite(pokemon);
+            }}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            style={styles.favoriteButton}>
+            <Heart
+              size={14}
+              color={favorite ? "#EF4444" : colors.textTertiary}
+              fill={favorite ? "#EF4444" : "transparent"}
+              strokeWidth={2.5}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.name, { color: colors.text }]}>
+          {pokemon.name}
+        </Text>
+
+        <View style={styles.typesContainer}>
+          {pokemon.types.map((type) => (
+            <TypeBadge key={type} type={type} variant="badge" />
+          ))}
         </View>
       </View>
 
-      <View style={styles.rightColumn}>
-        <TouchableOpacity
-          onPress={(e) => {
-            e.stopPropagation();
-            toggleFavorite(pokemon);
-          }}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          style={styles.favoriteButton}>
-          <Heart
-            size={18}
-            color={favorite ? "#FFF" : colors.text}
-            fill={favorite ? "#FFF" : "transparent"}
-            strokeWidth={2}
-          />
-        </TouchableOpacity>
-
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: pokemon.image }} style={styles.image} contentFit="contain" />
-        </View>
-      </View>
+      {/* Imagen más grande */}
+      <Image source={{ uri: pokemon.image }} style={styles.image} contentFit="contain" />
     </LinearGradient>
   );
 });
