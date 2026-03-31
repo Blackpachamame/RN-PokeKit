@@ -88,18 +88,14 @@ export function useGuessGame() {
 
   const animateShake = useCallback(() => {
     shakeAnim.setValue(0);
+
     Animated.sequence([
-      Animated.timing(shakeAnim, { toValue: 10, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -10, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 8, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -8, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 0, duration: 60, useNativeDriver: true }),
-    ]).start();
-    Animated.timing(feedbackOpacity, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+      Animated.timing(shakeAnim, { toValue: 15, duration: 40, useNativeDriver: false }),
+      Animated.timing(shakeAnim, { toValue: -15, duration: 40, useNativeDriver: false }),
+      Animated.timing(shakeAnim, { toValue: 10, duration: 40, useNativeDriver: false }),
+      Animated.timing(shakeAnim, { toValue: -10, duration: 40, useNativeDriver: false }),
+      Animated.timing(shakeAnim, { toValue: 0, duration: 40, useNativeDriver: false }),
+    ]).start(() => shakeAnim.setValue(0));
   }, [shakeAnim, feedbackOpacity]);
 
   // Cargar pokémon con límite de reintentos

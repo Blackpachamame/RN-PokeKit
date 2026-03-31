@@ -20,7 +20,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.pokekit"
+      "package": "com.anonymous.pokekit",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "output": "static",

@@ -15,6 +15,7 @@ export const createStyles = (colors: ThemeColors) =>
     },
     scrollContent: {
       paddingBottom: 40,
+      flexGrow: 1,
     },
 
     // Stats bar
