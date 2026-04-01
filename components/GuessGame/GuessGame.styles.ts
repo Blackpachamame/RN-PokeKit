@@ -229,4 +229,29 @@ export const createStyles = (colors: ThemeColors) =>
       color: colors.textTertiary,
       fontWeight: "500",
     },
+
+    //Errors
+    errorEmoji: {
+      fontSize: 48,
+      textAlign: "center",
+      marginBottom: 8,
+    },
+    errorText: {
+      fontSize: 15,
+      fontWeight: "600",
+      color: colors.textSecondary,
+      textAlign: "center",
+      marginBottom: 16,
+    },
+    retryBtn: {
+      backgroundColor: colors.primary,
+      paddingHorizontal: 24,
+      paddingVertical: 10,
+      borderRadius: 12,
+    },
+    retryBtnText: {
+      color: "#fff",
+      fontSize: 15,
+      fontWeight: "700",
+    },
   });

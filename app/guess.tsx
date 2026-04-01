@@ -54,6 +54,7 @@ export default function GuessScreen() {
           revealScale={revealScale}
           feedbackOpacity={feedbackOpacity}
           inputValue={inputValue}
+          onRetry={handleNext}
         />
 
         <GuessInput

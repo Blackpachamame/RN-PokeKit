@@ -64,6 +64,7 @@ export function GuessInput({
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="done"
+          maxLength={50}
           onSubmitEditing={onSubmit}
           editable={gameState === "playing"}
         />

@@ -3,7 +3,7 @@ import { useThemeColors } from "@/hooks/useThemedStyles";
 import { PokemonListItem } from "@/types/pokemon";
 import { Image } from "expo-image";
 import { useMemo } from "react";
-import { ActivityIndicator, Animated, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Animated, Pressable, StyleSheet, Text, View } from "react-native";
 import { createStyles } from "./GuessGame.styles";
 
 interface GuessPokemonSilhouetteProps {
@@ -13,6 +13,7 @@ interface GuessPokemonSilhouetteProps {
   revealScale: Animated.Value;
   feedbackOpacity: Animated.Value;
   inputValue: string;
+  onRetry: () => void;
 }
 
 export function GuessPokemonSilhouette({
@@ -22,6 +23,7 @@ export function GuessPokemonSilhouette({
   revealScale,
   feedbackOpacity,
   inputValue,
+  onRetry,
 }: GuessPokemonSilhouetteProps) {
   const colors = useThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -39,6 +41,14 @@ export function GuessPokemonSilhouette({
         {gameState === "loading" ? (
           <View style={styles.imagePlaceholder}>
             <ActivityIndicator size="large" color={colors.primary} />
+          </View>
+        ) : gameState === "error" ? (
+          <View style={styles.imagePlaceholder}>
+            <Text style={styles.errorEmoji}>😵</Text>
+            <Text style={styles.errorText}>Couldn&apos;t load a Pokémon</Text>
+            <Pressable style={styles.retryBtn} onPress={onRetry}>
+              <Text style={styles.retryBtnText}>Try again</Text>
+            </Pressable>
           </View>
         ) : pokemon ? (
           <Animated.View style={[styles.imageWrapper, { transform: [{ scale: revealScale }] }]}>
