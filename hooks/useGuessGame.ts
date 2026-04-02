@@ -1,6 +1,7 @@
 import { fetchRandomPokemon } from "@/services/pokeapi";
 import { PokemonListItem } from "@/types/pokemon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Haptics from "expo-haptics";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated, Keyboard } from "react-native";
 
@@ -35,13 +36,11 @@ export function useGuessGame() {
   const [record, setRecord] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
 
-  // Animaciones expuestas para los componentes
   const silhouetteOpacity = useRef(new Animated.Value(1)).current;
   const revealScale = useRef(new Animated.Value(0.85)).current;
   const feedbackOpacity = useRef(new Animated.Value(0)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
-  // Persistencia
   useEffect(() => {
     (async () => {
       const [savedRecord, savedBestStreak] = await Promise.all([
@@ -63,7 +62,6 @@ export function useGuessGame() {
     await AsyncStorage.setItem(STORAGE_KEYS.bestStreak, String(value));
   }, []);
 
-  // Animaciones
   const animateReveal = useCallback(() => {
     Animated.parallel([
       Animated.timing(silhouetteOpacity, {
@@ -96,6 +94,12 @@ export function useGuessGame() {
       Animated.timing(shakeAnim, { toValue: -10, duration: 40, useNativeDriver: false }),
       Animated.timing(shakeAnim, { toValue: 0, duration: 40, useNativeDriver: false }),
     ]).start(() => shakeAnim.setValue(0));
+
+    Animated.timing(feedbackOpacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   }, [shakeAnim, feedbackOpacity]);
 
   // Cargar pokémon con límite de reintentos
@@ -126,7 +130,6 @@ export function useGuessGame() {
     loadPokemon();
   }, []);
 
-  // Acciones
   const handleDifficultyChange = useCallback(
     (diff: Difficulty) => {
       if (diff === difficulty) return;
@@ -152,10 +155,12 @@ export function useGuessGame() {
       setGameState("correct");
       if (newScore > record) saveRecord(newScore);
       if (newStreak > bestStreak) saveBestStreak(newStreak);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } else {
       setStreak(0);
       setGameState("wrong");
       animateShake();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     }
 
     animateReveal();
@@ -185,7 +190,6 @@ export function useGuessGame() {
   }, [loadPokemon]);
 
   return {
-    // Estado
     difficulty,
     pokemon,
     gameState,
@@ -195,12 +199,10 @@ export function useGuessGame() {
     streak,
     record,
     bestStreak,
-    // Animaciones
     silhouetteOpacity,
     revealScale,
     feedbackOpacity,
     shakeAnim,
-    // Acciones
     handleDifficultyChange,
     handleSubmit,
     handleSkip,

@@ -1,5 +1,6 @@
 import { PokemonListItem } from "@/types/pokemon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Haptics from "expo-haptics";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 const FAVORITES_STORAGE_KEY = "@pokekit_favorites";
@@ -41,6 +42,12 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       const exists = prev.some((p) => p.id === pokemon.id);
       const updated = exists ? prev.filter((p) => p.id !== pokemon.id) : [...prev, pokemon];
       saveFavorites(updated);
+
+      // Vibración ligera al agregar/quitar favorito
+      Haptics.impactAsync(
+        exists ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium,
+      );
+
       return updated;
     });
   }, []);
