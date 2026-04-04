@@ -50,8 +50,11 @@ export default function HomeScreen() {
           iconColor="#22C55E"
           iconBackground="#F0FDF4"
           onPress={() => router.push("/compare")}
-          badge="Coming soon"
         />
+      </View>
+
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Blackpachamame © 2026</Text>
       </View>
     </SafeAreaView>
   );

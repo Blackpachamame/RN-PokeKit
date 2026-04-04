@@ -1,13 +1,24 @@
 import axios from "axios";
-import { EvolutionChain, PokemonDetails, PokemonListItem, PokemonMove } from "../types/pokemon";
+import {
+  EvolutionChain,
+  PokemonDetails,
+  PokemonListItem,
+  PokemonMove,
+  PokemonStat,
+} from "../types/pokemon";
 
 const api = axios.create({
   baseURL: "https://pokeapi.co/api/v2",
 });
 
 /**
- * Lista paginada CON tipos (para mostrar)
- * Hace N requests en paralelo pero trae data completa para cards
+ * Obtiene una página de Pokémon con todos sus datos necesarios para las cards.
+ * Hace un request inicial para obtener la lista paginada y luego N requests
+ * en paralelo para traer tipos e imagen de cada Pokémon.
+ *
+ * @param limit - Cantidad de Pokémon a traer (default: 20)
+ * @param offset - Desde qué posición empezar (default: 0)
+ * @returns Lista de Pokémon con id, name, image y types
  */
 export async function fetchPokemonList(
   limit: number = 20,
@@ -44,7 +55,11 @@ export async function fetchPokemonList(
 }
 
 /**
- * Índice ligero (para búsqueda/filtros)
+ * Obtiene el índice completo de los 1025 Pokémon en una sola request.
+ * Versión ligera: solo trae id, name e image (sin tipos).
+ * Usado como fuente de datos para búsqueda y filtros sin hacer requests adicionales.
+ *
+ * @returns Lista completa de Pokémon con id, name e image
  */
 export async function fetchPokemonIndex(): Promise<{ id: number; name: string; image: string }[]> {
   try {
@@ -67,8 +82,12 @@ export async function fetchPokemonIndex(): Promise<{ id: number; name: string; i
 }
 
 /**
- * Índice por tipo (para filtros)
- * Retorna solo id y name (ligero)
+ * Obtiene todos los Pokémon que pertenecen a un tipo específico.
+ * Versión ligera: solo trae id y name, filtra hasta el 1025 y ordena por id.
+ * Usado por useTypeFilter para construir el índice de filtrado por tipo.
+ *
+ * @param typeId - ID numérico del tipo (ver POKEMON_TYPE_IDS en pokemonTypes.ts)
+ * @returns Lista de Pokémon del tipo con id y name, ordenada por id
  */
 export async function fetchPokemonsByType(typeId: number): Promise<{ id: number; name: string }[]> {
   try {
@@ -96,8 +115,12 @@ export async function fetchPokemonsByType(typeId: number): Promise<{ id: number;
 }
 
 /**
- * Fetch un Pokémon específico por ID (versión ligera)
- * Usado para búsqueda y filtros por tipo
+ * Obtiene los datos básicos de un Pokémon por su ID.
+ * Versión ligera: solo trae id, name, image y types.
+ * Usado por usePokemonSearch y useTypeFilter para hidratar resultados paginados.
+ *
+ * @param id - ID del Pokémon
+ * @returns PokemonListItem o null si ocurre un error
  */
 export async function fetchPokemonByIdLight(id: number): Promise<PokemonListItem | null> {
   try {
@@ -116,6 +139,17 @@ export async function fetchPokemonByIdLight(id: number): Promise<PokemonListItem
   }
 }
 
+/**
+ * Obtiene todos los datos de un Pokémon para la pantalla de detalle.
+ * Hace múltiples requests en secuencia y paralelo:
+ *   1. Datos base del Pokémon
+ *   2. Datos de la especie (descripción, categoría, cadena evolutiva)
+ *   3. En paralelo: debilidades, cadena evolutiva y movimientos
+ *
+ * @param id - ID del Pokémon
+ * @returns PokemonDetails completo
+ * @throws Error si el fetch principal falla
+ */
 export async function fetchPokemonById(id: number): Promise<PokemonDetails> {
   try {
     const response = await api.get(`/pokemon/${id}`);
@@ -166,8 +200,12 @@ export async function fetchPokemonById(id: number): Promise<PokemonDetails> {
 }
 
 /**
- * Pokémon aleatorio para el juego "Who's That Pokémon?"
- * easy: Gen 1 (IDs 1–151) / hard: todos (IDs 1–1025)
+ * Obtiene un Pokémon aleatorio para el juego "Who's That Pokémon?".
+ * El rango de IDs depende de la dificultad seleccionada.
+ *
+ * @param difficulty - "easy" limita a Gen 1 (IDs 1-151), "hard" incluye todos (IDs 1-1025)
+ * @returns PokemonListItem con los datos necesarios para mostrar la silueta
+ * @throws Error si el fetch falla (el hook maneja reintentos)
  */
 export async function fetchRandomPokemon(difficulty: "easy" | "hard"): Promise<PokemonListItem> {
   const max = difficulty === "easy" ? 151 : 1025;
@@ -186,7 +224,11 @@ export async function fetchRandomPokemon(difficulty: "easy" | "hard"): Promise<P
 
 /**
  * Obtiene las debilidades de un Pokémon a partir de sus tipos.
- * Fetching en paralelo — un Pokémon tiene máximo 2 tipos.
+ * Hace los requests en paralelo — un Pokémon tiene máximo 2 tipos.
+ * Usa un Set para eliminar duplicados cuando ambos tipos comparten debilidades.
+ *
+ * @param types - Array de nombres de tipos (ej: ["fire", "flying"])
+ * @returns Array de nombres de tipos que hacen doble daño
  */
 async function fetchWeaknesses(types: string[]): Promise<string[]> {
   try {
@@ -207,8 +249,12 @@ async function fetchWeaknesses(types: string[]): Promise<string[]> {
 }
 
 /**
- * Construye la cadena de evolución completa de un Pokémon.
- * Los nodos del mismo nivel se resuelven en paralelo con Promise.all.
+ * Construye la cadena evolutiva completa de un Pokémon de forma recursiva.
+ * Las ramas del mismo nivel se resuelven en paralelo con Promise.all,
+ * lo que mejora el rendimiento en cadenas ramificadas (Eevee, Tyrogue, etc).
+ *
+ * @param evolutionChainUrl - URL completa del endpoint de cadena evolutiva
+ * @returns Array de EvolutionChain ordenado por aparición en la cadena
  */
 async function fetchEvolutionChain(evolutionChainUrl: string): Promise<EvolutionChain[]> {
   try {
@@ -247,6 +293,15 @@ async function fetchEvolutionChain(evolutionChainUrl: string): Promise<Evolution
   }
 }
 
+/**
+ * Obtiene los movimientos aprendidos por nivel de un Pokémon.
+ * Filtra solo los movimientos de tipo "level-up" y limita a los primeros 20
+ * para evitar tiempos de carga excesivos. Los fetches de detalle van en paralelo.
+ * El resultado se ordena por nivel de aprendizaje ascendente.
+ *
+ * @param movesData - Array de movimientos raw de la API
+ * @returns Array de PokemonMove ordenado por levelLearnedAt
+ */
 async function fetchMoves(movesData: any[]): Promise<PokemonMove[]> {
   try {
     const levelUpMoves = movesData
@@ -287,6 +342,43 @@ async function fetchMoves(movesData: any[]): Promise<PokemonMove[]> {
       .sort((a, b) => (a.levelLearnedAt || 0) - (b.levelLearnedAt || 0));
   } catch (error) {
     console.error("Error fetching moves:", error);
+    return [];
+  }
+}
+
+/**
+ * Versión pública de fetchWeaknesses que recibe el ID del Pokémon.
+ * Hace un request extra para obtener los tipos antes de calcular debilidades.
+ * Usada por el comparador (useCompare) para obtener debilidades de cada slot.
+ *
+ * @param pokemonId - ID del Pokémon
+ * @returns Array de nombres de tipos que hacen doble daño, o [] si falla
+ */
+export async function fetchWeaknessesForTypes(pokemonId: number): Promise<string[]> {
+  try {
+    const response = await api.get(`/pokemon/${pokemonId}`);
+    const types: string[] = response.data.types.map((t: any) => t.type.name);
+    return fetchWeaknesses(types);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Obtiene las estadísticas base de un Pokémon por su ID.
+ * Usado por el comparador (useCompare) para mostrar las barras de stats.
+ *
+ * @param id - ID del Pokémon
+ * @returns Array de PokemonStat con name y value, o [] si falla
+ */
+export async function fetchPokemonStats(id: number): Promise<PokemonStat[]> {
+  try {
+    const response = await api.get(`/pokemon/${id}`);
+    return response.data.stats.map((s: any) => ({
+      name: s.stat.name,
+      value: s.base_stat,
+    }));
+  } catch {
     return [];
   }
 }

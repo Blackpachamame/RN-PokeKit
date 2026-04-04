@@ -18,4 +18,13 @@ export const createStyles = (colors: ThemeColors) =>
       flex: 1,
       gap: 14,
     },
+    footer: {
+      alignItems: "center",
+      paddingBottom: 8,
+    },
+    footerText: {
+      fontSize: 12,
+      color: colors.textTertiary,
+      fontWeight: "500",
+    },
   });
