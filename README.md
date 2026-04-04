@@ -1,12 +1,12 @@
 # 🎮 PokéKit - React Native App
 
-Una aplicación móvil moderna para explorar el universo Pokémon, construida con React Native y PokeAPI. Permite navegar por más de 1,000 Pokémon con búsqueda en tiempo real, filtros por tipo, detalles completos, favoritos y un juego de adivinanza.
+Una aplicación móvil moderna para explorar el universo Pokémon, construida con React Native y PokeAPI. Permite navegar por más de 1,000 Pokémon con búsqueda en tiempo real, filtros por tipo, detalles completos, favoritos, un juego de adivinanza y un comparador de estadísticas.
 
 ---
 
 ## ✨ Características Principales
 
-- **🔍 Búsqueda inteligente** - Búsqueda en tiempo real con debounce sobre 1,025 Pokémon
+- **🔍 Búsqueda inteligente** - Búsqueda en tiempo real con debounce sobre 1,025 Pokémon por nombre o número
 - **♾️ Scroll infinito** - Carga paginada progresiva para óptima performance
 - **🎨 Filtros por tipo** - Filtra por múltiples tipos simultáneamente (18 tipos disponibles)
 - **📊 Pantalla de detalles completa**
@@ -16,9 +16,11 @@ Una aplicación móvil moderna para explorar el universo Pokémon, construida co
   - Cadena evolutiva con layouts adaptativos (lineal, ramificada)
 - **❤️ Favoritos** - Guardado persistente de Pokémon con AsyncStorage
 - **🎯 Who's That Pokémon?** - Juego de adivinanza con siluetas, dificultad Easy/Hard, puntuación, racha y récord persistido
+- **⚔️ Comparador** - Compará dos Pokémon lado a lado con barras de stats y sección de debilidades compartidas
 - **🌙 Modo oscuro** - Sistema de temas con persistencia y detección automática del sistema
 - **💀 Skeleton loaders** - Placeholders animados durante la carga
 - **🔄 Pull-to-refresh** - Recarga manual de datos
+- **📳 Haptic feedback** - Vibraciones táctiles en favoritos y resultados del juego
 - **⚡ Optimizaciones**
   - `expo-image` para caché persistente de imágenes en disco
   - `React.memo` en componentes críticos
@@ -38,7 +40,7 @@ Una aplicación móvil moderna para explorar el universo Pokémon, construida co
 
 ### State Management & Data
 - **Context API** - Estado global (tema, favoritos)
-- **Custom Hooks** - Lógica reutilizable (`usePokemonList`, `usePokemonSearch`, `useTypeFilter`, `usePokedexData`, `useGuessGame`)
+- **Custom Hooks** - Lógica reutilizable (`usePokemonList`, `usePokemonSearch`, `useTypeFilter`, `usePokedexData`, `useGuessGame`, `useCompare`)
 - **AsyncStorage** - Persistencia local (favoritos, récords del juego, tema)
 - **Axios** - Cliente HTTP
 
@@ -46,6 +48,7 @@ Una aplicación móvil moderna para explorar el universo Pokémon, construida co
 - **React Native Reanimated** - Animaciones de alto rendimiento (tabs, ThemeToggle)
 - **Expo Image** - Carga y caché optimizada de imágenes
 - **Expo Linear Gradient** - Gradientes en cards y headers
+- **Expo Haptics** - Feedback táctil en interacciones clave
 - **Lucide React Native** - Sistema de iconos
 - **React Native SVG** - Iconos de tipos personalizados
 - **React Native Safe Area Context** - Manejo de safe areas
@@ -101,12 +104,12 @@ npm run web
 ```
 pokekit-app/
 ├── app/                          # Screens (Expo Router)
-│   ├── _layout.tsx              # Root layout con providers
+│   ├── _layout.tsx              # Root layout con providers y tema del Stack
 │   ├── index.tsx                # Home con 4 cards de navegación
 │   ├── pokedex.tsx              # Pokédex con búsqueda y filtros
 │   ├── favorites.tsx            # Pokémon guardados
 │   ├── guess.tsx                # Juego Who's That Pokémon?
-│   ├── compare.tsx              # Comparador (próximamente)
+│   ├── compare.tsx              # Comparador de stats y debilidades
 │   └── pokemon/
 │       ├── [id].tsx             # Pantalla de detalle
 │       └── tabs/                # Tabs de detalle
@@ -119,6 +122,7 @@ pokekit-app/
 │   ├── ScreenHeader/            # Header genérico con back + ThemeToggle
 │   ├── PokemonCard/             # Card de Pokémon en lista
 │   ├── PokemonHeader/           # Header de pantalla de detalle
+│   ├── CompareScreen/           # Selector, stats y debilidades del comparador
 │   ├── SearchBar/               # Barra de búsqueda
 │   ├── TypeFilters/             # Filtros horizontales por tipo
 │   ├── TypeBadge/               # Badge/chip de tipo (2 variantes)
@@ -133,16 +137,17 @@ pokekit-app/
 │   └── EndOfListMessage/        # Mensaje de fin de lista
 ├── context/                     # Context providers
 │   ├── ThemeContext.tsx         # Tema (light/dark/auto) con persistencia
-│   └── FavoritesContext.tsx     # Favoritos con persistencia
+│   └── FavoritesContext.tsx     # Favoritos con persistencia y haptic feedback
 ├── hooks/                       # Custom hooks
 │   ├── usePokemonList.ts        # Lista principal con infinite scroll
 │   ├── usePokemonSearch.ts      # Búsqueda con debounce y race conditions
 │   ├── useTypeFilter.ts         # Filtrado por tipo con infinite scroll
 │   ├── usePokedexData.ts        # Orquestador: combina lista, búsqueda y filtros
-│   ├── useGuessGame.ts          # Lógica completa del juego
+│   ├── useGuessGame.ts          # Lógica completa del juego con haptics
+│   ├── useCompare.ts            # Lógica del comparador con búsqueda dual
 │   └── useThemedStyles.ts       # Helpers para estilos con tema
 ├── services/                    # API services
-│   └── pokeapi.ts              # Cliente de PokeAPI (axios)
+│   └── pokeapi.ts              # Cliente de PokeAPI con JSDoc completo
 ├── types/                       # TypeScript types
 │   └── pokemon.ts              # Interfaces y tipos de Pokémon
 └── utils/                       # Utilidades
@@ -166,16 +171,14 @@ Este proyecto me permitió profundizar en técnicas de optimización para apps c
 Desarrollé un sistema de custom hooks que separa la lógica de negocio de la UI. El hook `usePokedexData` orquesta tres sub-hooks independientes (`usePokemonList`, `usePokemonSearch`, `useTypeFilter`) y expone una interfaz unificada a la pantalla. El sistema de temas con Context API + AsyncStorage maneja persistencia y detección automática de preferencias del sistema. El patrón `createStyles(colors)` con `useMemo` garantiza estilos reactivos al tema sin recreaciones innecesarias.
 
 ### UX Consciente
-Implementar skeleton loaders por contexto (header, tabs, contenido) en lugar de spinners genéricos mejoró la percepción de velocidad. El debounce en búsquedas, el manejo granular de estados (loading inicial vs. loading more), y las animaciones de reveal en el juego demuestran atención al detalle en la experiencia del usuario.
+Implementar skeleton loaders por contexto (header, tabs, contenido) en lugar de spinners genéricos mejoró la percepción de velocidad. El debounce en búsquedas, el manejo granular de estados (loading inicial vs. loading more), el haptic feedback en interacciones clave, y las animaciones de reveal en el juego demuestran atención al detalle en la experiencia del usuario.
 
 ---
 
 ## 🔮 Próximas Mejoras
 
-- [ ] **Comparador de Pokémon** - Comparar stats lado a lado
 - [ ] **Filtros avanzados** - Por generación, stats mínimos
 - [ ] **Animaciones de transición** - Shared element transitions entre pantallas
-- [ ] **Haptic feedback** - Vibraciones sutiles en interacciones (expo-haptics)
 - [ ] **Testing** - Unit tests (Jest) + E2E (Detox)
 - [ ] **Offline mode** - Cache de Pokémon visitados
 
@@ -188,6 +191,7 @@ Implementar skeleton loaders por contexto (header, tabs, contenido) en lugar de 
 ---
 
 <div align="center">
+  <p>Blackpachamame © 2026</p>
   <p>Hecho con ❤️ y React Native</p>
   <p>⭐ Si te gustó el proyecto, dale una estrella en GitHub!</p>
 </div>
