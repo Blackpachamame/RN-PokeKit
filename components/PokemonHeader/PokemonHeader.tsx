@@ -33,7 +33,7 @@ function PokemonHeader({ id, name, image, types, pokemon }: PokemonHeaderProps) 
       start={{ x: 0, y: 1 }}
       end={{ x: 0, y: 0 }}>
       <Image
-        source={require("@/assets/images/pokeball2.png")}
+        source={require("@/assets/images/pokeball.png")}
         style={styles.backgroundIcon}
         contentFit="contain"
       />
