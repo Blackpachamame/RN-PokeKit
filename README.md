@@ -74,7 +74,7 @@ npm >= 9.0.0
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/pokekit-app.git
+git clone https://github.com/Blackpachamame/RN-PokeKit.git
 cd pokekit-app
 
 # Instalar dependencias
